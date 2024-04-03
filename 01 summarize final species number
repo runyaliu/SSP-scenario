@@ -4,3 +4,33 @@
 Runya Liu
 ###########
 ###########
+##species list shoule be the whole for 7019####
+dir  <- '/Volumes/Extreme SSD/results/'
+
+sp_list <- read.csv(paste(dir,"target_sp_taxon.csv",sep=""))
+#sp_list <- read.csv(paste(dir,"Target_sp.csv",sep=""))
+
+sp <- sub(' ','_',sp_list$Species_name)
+sp_taxon <- sp_list$Taxon
+
+for(i in 1:length(sp)){
+sp_n <- sp[i]
+sp_taxa <- sp_taxon[i]
+eval(parse(text =paste("dirs <- '",data_dir,"/",sp_taxa,"_proj","/",sp_n,"/'",sep="")))
+ird <- c(dir(dirs))
+
+if(length(ird)<5){
+  
+  print(sp_n)
+  selec_nm <- sp_n
+  selec_nm <- c(selec_nm)
+  selec_taxa <- c(sp_taxa)
+  
+}else{
+  
+  
+}
+
+
+}
+
