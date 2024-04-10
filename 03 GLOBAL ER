@@ -1,0 +1,71 @@
+################################################
+################################################
+#######RUNYA LIU 2024.04.10#####################
+################################################
+################################################
+
+##################global EINES
+final_list <- read.csv('I:/list_sp.csv')
+sp_na <- final_list$V1
+taxon <- final_list$V2
+
+for(i in 1:length(sp_na)){
+  # for(i in 1:20){
+  
+  sp_n <- sp_na[i]
+  sp_taxa <- taxon[i]
+  #  R <- 1/85
+  eval(parse(text = paste("sp_1 <- raster('",dir,sp_taxa,"_proj","/",sp_n,"/",sp_n,"_Current_d.tif')",sep="")))
+  
+  eval(parse(text = paste("sp_26 <- raster('",dir,sp_taxa,"_proj","/",sp_n,"/",sp_n,"_Future_ssp3_ssp3_Pmig.tif')",sep="")))
+  
+  
+  sp_ch <- sp_1 -sp_26
+  
+  T_26 <- (85*(ln(1/sum(values(sp_1),na.rm = T))/ln(sum(values(sp_26),na.rm = T)/sum(values(sp_1),na.rm = T))))
+  
+  Y_26 <- 1 / T_26 
+  
+  
+  if_y26 <- ifelse(is.infinite(Y_26),round(Y_26),Y_26)
+  if_y26[if_y26==0] <- 0
+  
+  
+  if( i == 1){
+    
+    sp_risk <- c(sp_n,sum(values(sp_1),na.rm = T),sum(values(sp_26),na.rm = T),if_y26)
+    sp_count <- if_y26
+    
+  }else{
+    
+    sp_risk_2 <- c(sp_n,sum(values(sp_1),na.rm = T),sum(values(sp_26),na.rm = T),if_y26)
+    sp_risk <- rbind(sp_risk,sp_risk_2 )
+    
+    sp_count <- sp_count + if_y26
+  }
+  
+  sp_sum <- sum(values(sp_ch),na.rm = T)  ####1 species -->
+  # if(is.infinite(sp_sum)|sp_sum ==0){
+  if(sp_sum ==0){
+    sp1_sum <- sum(values(sp_1),na.rm = T)
+    sp_anbun <- if_y26 / sp1_sum
+    sp_risk_26 <-  sp_anbun *sp_1
+    
+    
+  }else{
+    sp_anbun <- if_y26 /sp_sum
+    
+    sp_risk_26 <- sp_ch *sp_anbun
+  }
+  # writeRaster(sp_risk_26, paste(dir,'species_extinction_Amphibia/',sp_n,'.tif',sep=""),format='GTiff', overwrite= T) 
+  
+  if( i == 1){
+    sp_eines_26 <- sp_risk_26
+    
+  }else{
+    sp_eines_26 <- sp_eines_26 +sp_risk_26
+    
+  }
+  print(i)
+}
+
