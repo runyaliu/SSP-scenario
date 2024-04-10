@@ -11,7 +11,7 @@ taxon <- final_list$V2
 
 for(i in 1:length(sp_na)){
   # for(i in 1:20){
-  
+######edit  
   sp_n <- sp_na[i]
   sp_taxa <- taxon[i]
   #  R <- 1/85
@@ -32,7 +32,7 @@ for(i in 1:length(sp_na)){
   
   
   if( i == 1){
-    
+  #####edit  
     sp_risk <- c(sp_n,sum(values(sp_1),na.rm = T),sum(values(sp_26),na.rm = T),if_y26)
     sp_count <- if_y26
     
@@ -60,6 +60,7 @@ for(i in 1:length(sp_na)){
   # writeRaster(sp_risk_26, paste(dir,'species_extinction_Amphibia/',sp_n,'.tif',sep=""),format='GTiff', overwrite= T) 
   
   if( i == 1){
+########i= edit
     sp_eines_26 <- sp_risk_26
     
   }else{
