@@ -5,32 +5,45 @@ Runya Liu
 ###########
 ###########
 ##species list shoule be the whole for 7019####
-dir  <- '/Volumes/Extreme SSD/results/'
+#########################
+dir  <- 'I:/ssp3/'
 
-sp_list <- read.csv(paste(dir,"target_sp_taxon.csv",sep=""))
-#sp_list <- read.csv(paste(dir,"Target_sp.csv",sep=""))
+taxon <- c('Amphibia','Aves','Mammalia','Plantae','Reptilia')
+target <- read.csv('I:/pre_HHD/GBIF_old/landuse_bio2023/etcData/Target_sp.csv')
+name <- target$Species_name
+sp_na <- sub(' ','_',name)
+taxon <- target$Taxon
 
-sp <- sub(' ','_',sp_list$Species_name)
-sp_taxon <- sp_list$Taxon
-
-for(i in 1:length(sp)){
-sp_n <- sp[i]
-sp_taxa <- sp_taxon[i]
-eval(parse(text =paste("dirs <- '",data_dir,"/",sp_taxa,"_proj","/",sp_n,"/'",sep="")))
-ird <- c(dir(dirs))
-
-if(length(ird)<5){
+for(i in 1:length(sp_na)){
+  #for(i in 2840:2850){
+    
+  sp_n <- sp_na[i]
+  sp_taxa <- taxon[i]
+  eval(parse(text =paste("dirs <- '",dir,"/",sp_taxa,"_proj","/",sp_n,"/'",sep="")))
+  ird <- c(dir(dirs))
+  print(length(ird))
   
-  print(sp_n)
-  selec_nm <- sp_n
-  selec_nm <- c(selec_nm)
-  selec_taxa <- c(sp_taxa)
+  if(length(ird)>3){
+    
+    #print(i)
+    species_list <- c(sp_n,sp_taxa)
+
   
-}else{
-  
+  if(i==1){
+    lis_final <- species_list
+    
+  }else{
+    lis_final <- rbind(lis_final,species_list)
+    
+    
+  }
+  }else{
+    
+    
+  }
   
 }
 
 
-}
+
 
