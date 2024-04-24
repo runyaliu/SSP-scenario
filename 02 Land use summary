@@ -3,6 +3,34 @@
 ###################################
 #####Land use Summary##############
 
-###### World ###### 
-dir <- '/Volumes/Extreme SSD/land use/'
+###### Env setting ###### 
+dir_ssp1 <- 'F:/2023/biodiversity_model/landuse_bio2023/envdata/landuse_change/land area/'
+dir_name <- c(dir(dir_ssp1))
+name <- gsub(".tif","",dir_name)
+
+dir_ct <- 'F:/sample_contry/12555170/continent-poly/'
+ct <- c("Africa","Asia","Australia","Europe","North America","Oceania","South America")
+
+
+#########laod raster###############
+#########Ha change  ###############
+library(raster)
+library(sf)
+
+for(i in 1:length(name)){
+  print(i)
+  eval(parse(text=paste(name[i]," <- raster('",dir_ssp1,name[i],".tif')",sep="")))
+  eval(parse(text=paste("names(",name[i],") <- '",name[i],"'",sep="")))
+        eval(parse(text=paste(name[i],"_ha <-", name[i],"* 100" ,sep="")))
+}
+
+for(i in 1:length(ct)){
+  print(i)
+  eval(parse(text=paste(ct[i]," <-  read_sf('",dir_ct,ct[i],".shp')",sep="")))
+print("done 1st")
+  eval(parse(text=paste("names(",ct[i],") <- '",ct[i],"'",sep="")))
+print("done 2nd")
+        eval(parse(text=paste("st_geometry(",ct[i], ") <-'",ct[i],"_a","'" ,sep="")))
+print("done 3rd")
+}
 
