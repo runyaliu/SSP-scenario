@@ -9,7 +9,7 @@ dir_name <- c(dir(dir_ssp1))
 name <- gsub(".tif","",dir_name)
 
 dir_ct <- 'F:/sample_contry/12555170/continent-poly/'
-ct <- c("Africa","Asia","Australia","Europe","North America","Oceania","South America")
+ct <- c("Africa","Asia","Australia","Europe","North_America","Oceania","South_America")
 
 
 #########laod raster###############
@@ -27,10 +27,49 @@ for(i in 1:length(name)){
 for(i in 1:length(ct)){
   print(i)
   eval(parse(text=paste(ct[i]," <-  read_sf('",dir_ct,ct[i],".shp')",sep="")))
-print("done 1st")
-  eval(parse(text=paste("names(",ct[i],") <- '",ct[i],"'",sep="")))
-print("done 2nd")
-        eval(parse(text=paste("st_geometry(",ct[i], ") <-'",ct[i],"_a","'" ,sep="")))
-print("done 3rd")
+ eval(parse(text=paste(ct[i], "_a <- ", ct[i],"[6]", sep="" )))
+}
+#########laod raster###############
+#########Ha change  ###############
+
+for(i in 1:length(name)){
+# for (t in 1:length(ct)){
+print(i)
+print(t)
+ eval(parse(text=paste(name[i],"_",ct[1],"<- mask(",name[t], "_ha,",ct[1],"_a)" ,sep="")))
+eval(parse(text=paste("values(",name[i],"_",ct[1] ,")[values(",name[i],"_",ct[1] ,")<0] <- NA",sep="")))
+eval(parse(text=paste("pos_sum <- sum(" ,"values(",name[i],"_",ct[1],"), na.rm=T)" ,sep="")))
+
+eval(parse(text=paste("values(",name[i],"_",ct[t] ,")[values(",name[i],"_",ct[t] ,")>0]<- NA",sep="")))
+nag_sum <-sum(tmp_nag, na.rm=T)
+
+if(i == 1){
+summary_pos <- c(name[i], ct[t], "positive", pos_sum )
+#summary_nag <- c(name[i], ct[t], "nagtive", nag_sum )
+
+}else{
+summary_pos <-rbind(summary_pos,c(name[i], ct[t], "positive", pos_sum ))
+#summary_nag <- rbind(summary_nag, c(name[i], ct[t], "nagtive", nag_sum ) )
+
 }
 
+ }
+
+}
+######################################################################################
+for (i in 1:7){
+urban_pos <- values(urban)[values(urban) <0] 
+
+
+}
+
+
+
+
+######################################################################################
+ tmp_pos <- values(grass_ch_area_Africa)[values(grass_ch_area_Africa)<0]
+  sum(tmp_pos, na.rm=T)
+  tmp_nag <- values(grass_ch_area_Africa)[values(grass_ch_area_Africa)<0]
+  sum(tmp_nag, na.rm=T)
+
+values(tr_pos)[values(tr_pos) <0] <- NA
